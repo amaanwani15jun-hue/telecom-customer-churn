@@ -4,19 +4,13 @@ library(janitor)
 library(here)
 
 # Clean column names to snake_case and remove all rows with missing values
-cleaned_data <- raw_data |> 
+# Save the cleaned data to CSV file in the processed folder and
+# Reload cleaned data and convert binary categorical variables to numeric (1/0
+raw_data |> 
   clean_names() |> 
-  drop_na()
-
-# Save the cleaned data to CSV file in the processed folder
-write.csv(cleaned_data, 
-          here("data/processed", "clean_data.csv"), 
-          row.names = FALSE)
-
-# Reload cleaned data and convert binary categorical variables to numeric (1/0)
-cleaned_data <- read.csv(here("data/processed", "clean_data.csv")) |> 
+  drop_na()  |> 
   mutate(
-   
+    
     gender = ifelse(gender == "Male", 1, 0),
     partner = ifelse(partner == "Yes", 1, 0),
     dependents = ifelse(dependents == "Yes", 1, 0),
@@ -29,7 +23,10 @@ cleaned_data <- read.csv(here("data/processed", "clean_data.csv")) |>
     streaming_movies = ifelse(streaming_movies == "Yes", 1, 0),
     paperless_billing = ifelse(paperless_billing == "Yes", 1, 0),
     churn = ifelse(churn == "Yes", 1, 0)
-  )
+  ) |> write.csv(here("data/processed", "clean_data.csv"), 
+                 row.names = FALSE)
+
+cleaned_data <- read.csv(here("data/processed" , "clean_data.csv")) 
 
 # Preview first 6 rows to check data structure
 head(cleaned_data)
