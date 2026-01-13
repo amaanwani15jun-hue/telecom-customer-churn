@@ -45,6 +45,10 @@ ggsave("CHURN_DISTRIBUTION.png" ,
         width = 16, height = 9, units = "in")
 
 # plot2
+ mean_value <-  round(mean(cleaned_data$tenure) , 1)
+median_value <- round(median(cleaned_data$tenure) , 1)
+label_1 <-  paste0("Mean: " , mean_value ," months")
+label_2 <-  paste0("Median: " , median_value ," months")
 plot_2 <- ggplot(data = cleaned_data ,  aes(x = tenure)) +
   geom_histogram(color = "black" , fill = "#FFB000" , bins = 15 ) +
   geom_text(stat = "bin" , aes(label = after_stat(count)) , 
@@ -52,7 +56,7 @@ plot_2 <- ggplot(data = cleaned_data ,  aes(x = tenure)) +
             fontface = "bold" , 
             angle = 17 , 
             bins = 15) +
-  labs(
+   labs(
     title = "Customer Tenure Distribution Shows Most Customers are Recent",
     subtitle = "Distribution shows many new customers ",
     y = "Number of Customers",
@@ -60,7 +64,13 @@ plot_2 <- ggplot(data = cleaned_data ,  aes(x = tenure)) +
     fill = NULL, 
     caption = "Data shows customer lifecycle duration in the telecom business"
   ) +
-  theme_custom
+   geom_vline(xintercept = mean_value, color = "red", linetype = "dashed") +
+   geom_vline(xintercept = median_value, color = "blue") +
+   annotate("text", x = mean_value, y = Inf, label = label_1, 
+            vjust = 2, hjust = -0.1, color = "red") +
+   annotate("text", x = median_value, y = Inf, label = label_2 , 
+            vjust = 2, hjust = 1.1, color = "blue") +
+   theme_custom
 ggsave("tenure_distribution.png" , 
        plot = plot_2 , 
        width = 16, height = 9, units = "in"
