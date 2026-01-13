@@ -83,19 +83,20 @@ median_monthly <- round(median(cleaned_data$monthly_charges) , 1)
 label_1 <-  paste0("Mean: " , mean_monthly ," $")
 label_2 <-  paste0("Median: " , median_monthly ," $")
 plot_3 <- ggplot(data = cleaned_data ,  aes(x = monthly_charges)) +
-  geom_histogram(color = "black" , fill = "#FFB000" , bins = 20) +
+  geom_histogram(color = "black"  , bins = 20 , 
+                 aes(fill = internet_service)) +
   geom_text(stat = "bin" , aes(label = after_stat(count)) , 
             vjust = -0.7 , size = 2.7 , 
             fontface = "bold" , 
             angle = 17 , 
             bins = 20) +
   labs(
-    title = "Monthly Charges ",
+    title = "Monthly Charges not bimodal ",
     subtitle = "Customers cluster around 
-    below(~$28) and between (~$75 -- ~$90) price points, indicating different service tiers",
+    below(~$28) and between ($ 75--90) price points, indicating different service tiers",
     y = "Number of Customers",
     x = "Monthly Charges ($)",
-    fill = NULL, 
+    fill = "Service Type",
     caption = "Data reveals pricing strategy segmentation and customer spending behavior"
   ) +
   geom_vline(xintercept = mean_monthly, color = "red", linetype = "dashed") +
@@ -104,9 +105,50 @@ plot_3 <- ggplot(data = cleaned_data ,  aes(x = monthly_charges)) +
            vjust = 2, hjust = -0.1, color = "red") +
   annotate("text", x = median_monthly +15, y = Inf, label = label_2 , 
            vjust = 2, hjust = 1.1, color = "blue") +
+  scale_fill_viridis_d() +
   theme_custom
 
 
 ggsave("monthly_charges_distribution.png" , 
        plot = plot_3 , 
        width = 16, height = 9, units = "in")
+# Check if bimodal
+bimodal_check <- cleaned_data %>%
+  summarise(
+    low_tier = sum(monthly_charges < 50) / n() * 100,
+    high_tier = sum(monthly_charges >= 50) / n() * 100,
+    is_bimodal = abs(mean_monthly - median_monthly) > 10  
+  )
+bimodal_check
+# plot_4 
+
+plot_4 <- ggplot(data = cleaned_data ,  aes(x = contract)) +
+  geom_bar(color = "black"  , 
+                 aes(fill = contract ) , show.legend = FALSE) +
+  geom_text(stat = "count" , 
+            aes(label =paste(round(after_stat(count)/sum(after_stat(count)) *100 , 1) , "%")) , 
+            vjust = -0.7 , size = 3.5 , 
+            fontface = "bold"  ) +
+  labs(
+    title = "Contract Type Distribution Reveals Customer Commitment Levels",
+    subtitle = "Majority of customers (55%) prefer month-to-month flexibility",
+    y = "Number of Customers",
+    x = "Type of Contract",
+    fill = NULL,
+    caption = "Understanding contract preferences helps in retention strategy planning"
+  ) +
+  scale_fill_manual(values = c("Month-to-month" = "#EF476F", 
+                               "One year" = "#FFD166",         
+                               "Two year" = "#06D6A0")) +
+  theme_custom
+
+
+
+plot_4
+ggsave("contract_distribution.png" , 
+       plot = plot_4 , 
+       width = 16, height = 9, units = "in")
+
+
+
+
