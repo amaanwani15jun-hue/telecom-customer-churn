@@ -177,5 +177,119 @@ plot_5 <- ggplot(plot_data , aes(x= contract , y = prop,  fill = factor(churn)) 
 ggsave("bivar_contract_vs_churn_01.png" , 
        plot = plot_5, 
        width = 16, height = 9, units = "in")
+# plot_6
+plot_data2 <-  cleaned_data |> 
+  count(payment_method , churn) |> 
+  group_by(payment_method) |> 
+  mutate(prop = n/sum(n)) |> ungroup()
+plot_6 <- ggplot(plot_data2 , aes(x= payment_method , y = prop,  fill = factor(churn)) )+
+  geom_col(color = "black" , position = "fill") +
+  geom_text(aes(label = percent(prop, accuracy = 1)), 
+            position = position_fill(vjust = 0.5), 
+            color = "white",                       
+            fontface = "bold") +
+  labs(
+    title = "Electronic Check Users Show Highest Churn Vulnerability",
+    subtitle = "Converting check users to automatic
+    payments could prevent 1 in 3 potential churn cases",
+    y = "Proportion of Customers",
+    x = "Payment Method",
+    fill = "Churn",
+    caption = "Operational insight: Friction in
+    payment process directly impacts customer retention"
+  ) +
+  scale_y_continuous(labels = percent) +
+  scale_fill_discrete(labels = c("No", "Yes")) +
+  theme_custom
 
 
+ggsave("bivar_payment_vs_churn_02.png" , 
+       plot = plot_6, 
+       width = 16, height = 9, units = "in")
+
+
+# plot7 
+
+plot_7a <- ggplot(cleaned_data , aes(x = factor(churn) , y =tenure , fill=factor(churn))) +
+  geom_violin(alpha= 0.4) +
+  geom_boxplot(width = 0.2, color = "black", outlier.shape = NA) +
+  labs(
+    title = "Customers Typically Churn Within the First Year",
+    subtitle = "Median tenure for churned users is significantly lower than retained users",
+    x = "Churn Status",
+    y = "Tenure (Months)",
+    fill = "Churned?" , 
+    caption = "Tenure is a huge indicator of churn"
+  ) +
+  scale_x_discrete(labels = c("0" = "Stayed", "1" = "Churned"))+
+  scale_fill_manual(values = c("0" = "#648FFF", "1" = "#FFB000"), labels = c("No", "Yes")) +
+  theme_custom
+ggsave("bivar_tenure_vs_churn_03_a.png" , 
+       plot = plot_7a , 
+       width = 16 , height = 9 , 
+       units = "in")
+
+
+
+# plot_7b
+plot_7b <- ggplot(cleaned_data , aes(x = tenure ,  fill=factor(churn))) +
+ 
+  geom_histogram(color = "black") +
+  labs(
+    title = "Customers Typically Churn Within the First Year",
+    subtitle = "typically after 24 months churn tends to be very low",
+    x = "Churn Status",
+    y = "freq",
+    fill = "Churned?" , 
+    caption = "Tenure is a huge indicator of churn"
+  ) +
+ 
+  scale_fill_manual(values = c("0" = "#648FFF", "1" = "#FFB000"), labels = c("No", "Yes")) +
+  theme_custom
+ggsave("bivar_tenure_vs_churn_03_b.png" , 
+       plot = plot_7b , 
+       width = 16 , height = 9 , 
+       units = "in")
+
+
+# plot_8a
+plot_8a <- ggplot(cleaned_data , aes(x = factor(churn) , y =monthly_charges , fill=factor(churn))) +
+  geom_violin(alpha= 0.4) +
+  geom_boxplot(width = 0.2, color = "black", outlier.shape = NA) +
+  labs(
+    title = "Higher Monthly Bills Increase Churn Risk, Especially for New Customers",
+    subtitle = "Median monthly charges for churned users is  higher
+    than retained users",
+    x = "Churn Status",
+    y = "Monthy charges in $",
+    fill = "Churned?" , 
+    caption = "Monthly charge is a huge indicator of churn"
+  ) +
+  scale_x_discrete(labels = c("0" = "Stayed", "1" = "Churned"))+
+  scale_fill_manual(values = c("0" = "#648FFF", "1" = "#FFB000"), labels = c("No", "Yes")) +
+  theme_custom
+ggsave("bivar_monthly_vs_churn_04_a.png" , 
+       plot = plot_8a , 
+       width = 16 , height = 9 , 
+       units = "in")
+
+
+# plot_8b
+plot_8b <- ggplot(cleaned_data , aes(x = monthly_charges ,  fill=factor(churn))) +
+  
+  geom_histogram(color = "black") +
+  labs(
+    title = "Customers Typically Churn Within the First Year",
+    subtitle = "People begin to churn more when mothly charge > 65$",
+    x = "Churn Status",
+    y = "Freq",
+    fill = "Churned?" , 
+    caption = "Monthly Charge is a huge indicator of churn"
+  ) +
+  
+  scale_fill_manual(values = c("0" = "#648FFF", "1" = "#FFB000"), labels = c("No", "Yes")) +
+  theme_custom
+ggsave("bivar_monthly_vs_churn_04_b.png" , 
+       plot = plot_8b , 
+       width = 16 , height = 9 , 
+       units = "in")
