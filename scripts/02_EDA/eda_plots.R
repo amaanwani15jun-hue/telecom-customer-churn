@@ -144,11 +144,38 @@ plot_4 <- ggplot(data = cleaned_data ,  aes(x = contract)) +
 
 
 
-plot_4
+
 ggsave("contract_distribution.png" , 
        plot = plot_4 , 
        width = 16, height = 9, units = "in")
 
 
+# plot_5 
+plot_data <-  cleaned_data |> 
+  count(contract , churn) |> 
+  group_by(contract) |> 
+  mutate(prop = n/sum(n)) |> ungroup()
+plot_5 <- ggplot(plot_data , aes(x= contract , y = prop,  fill = factor(churn)) )+
+  geom_col(color = "black" , position = "fill") +
+  geom_text(aes(label = percent(prop, accuracy = 1)), 
+               position = position_fill(vjust = 0.5), 
+               color = "white",                       
+               fontface = "bold") +
+  labs(
+    title = "Month-to-Month Contracts Have Significantly Higher Churn Risk",
+    subtitle = "Churn rate is 43% for month-to-month vs only 3% for two-year contracts",
+    y = "Proportion of Customers",
+    x = "Contract Type",
+    fill = "Churn",
+    caption = "Long-term contracts reduce churn by 4× - crucial for retention strategy"
+  ) +
+  scale_y_continuous(labels = percent) +
+  scale_fill_discrete(labels = c("No", "Yes")) +
+  theme_custom
+ 
+
+ggsave("bivar_contract_vs_churn_01.png" , 
+       plot = plot_5, 
+       width = 16, height = 9, units = "in")
 
 
