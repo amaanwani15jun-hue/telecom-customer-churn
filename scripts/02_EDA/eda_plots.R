@@ -76,3 +76,37 @@ ggsave("tenure_distribution.png" ,
        width = 16, height = 9, units = "in"
        )
 
+
+# plot3
+mean_monthly <-  round(mean(cleaned_data$monthly_charges) , 1)
+median_monthly <- round(median(cleaned_data$monthly_charges) , 1)
+label_1 <-  paste0("Mean: " , mean_monthly ," $")
+label_2 <-  paste0("Median: " , median_monthly ," $")
+plot_3 <- ggplot(data = cleaned_data ,  aes(x = monthly_charges)) +
+  geom_histogram(color = "black" , fill = "#FFB000" , bins = 20) +
+  geom_text(stat = "bin" , aes(label = after_stat(count)) , 
+            vjust = -0.7 , size = 2.7 , 
+            fontface = "bold" , 
+            angle = 17 , 
+            bins = 20) +
+  labs(
+    title = "Monthly Charges ",
+    subtitle = "Customers cluster around 
+    below(~$28) and between (~$75 -- ~$90) price points, indicating different service tiers",
+    y = "Number of Customers",
+    x = "Monthly Charges ($)",
+    fill = NULL, 
+    caption = "Data reveals pricing strategy segmentation and customer spending behavior"
+  ) +
+  geom_vline(xintercept = mean_monthly, color = "red", linetype = "dashed") +
+  geom_vline(xintercept = median_monthly, color = "blue") +
+  annotate("text", x = mean_monthly -15, y = Inf, label = label_1, 
+           vjust = 2, hjust = -0.1, color = "red") +
+  annotate("text", x = median_monthly +15, y = Inf, label = label_2 , 
+           vjust = 2, hjust = 1.1, color = "blue") +
+  theme_custom
+
+
+ggsave("monthly_charges_distribution.png" , 
+       plot = plot_3 , 
+       width = 16, height = 9, units = "in")
