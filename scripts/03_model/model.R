@@ -27,6 +27,8 @@ theme_custom <- theme_classic() +
 # Load your cleaned data
 plotting_data <- read.csv(here("data/processed" , "clean_data.csv"))
 
+
+
 # ============================================
 # STEP 1: PREPARE DATA FOR MODELING
 # ============================================
@@ -38,7 +40,8 @@ model_data <- plotting_data %>%
 # Convert target to factor (required by caret)
 model_data <- model_data %>%
   mutate(churn = factor(churn, levels = c(0, 1), labels = c("No", "Yes")))
-
+model_data <- model_data %>%
+  mutate(across(where(is.character), as.factor))
 # Check structure
 str(model_data)
 
