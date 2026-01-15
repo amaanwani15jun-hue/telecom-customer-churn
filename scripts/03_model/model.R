@@ -35,7 +35,7 @@ plotting_data <- read.csv(here("data/processed" , "clean_data.csv"))
 
 # Remove customer ID (identifier, not a feature)
 model_data <- plotting_data %>%
-  select(-customer_id)  # Adjust to your column name
+  select(churn, tenure, contract, internet_service, paperless_billing)  # Adjust to your column name
 
 # Convert target to factor (required by caret)
 model_data <- model_data %>%
