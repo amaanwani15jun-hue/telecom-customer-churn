@@ -293,3 +293,54 @@ ggsave("bivar_monthly_vs_churn_04_b.png" ,
        plot = plot_8b , 
        width = 16 , height = 9 , 
        units = "in")
+
+# multivar_plot9
+
+plot_9 <-  ggplot(cleaned_data , aes(x = tenure , y =monthly_charges  
+                          , fill= factor(churn)
+                          )) +
+  
+ geom_jitter(alpha = 0.6 , size = 2 , shape = 21 , color = "black" ) +
+  labs(
+    title = "High-Cost New Customers Form Most At-Risk Churn Cluster",
+    subtitle = "Danger zone: Customers with low tenure (<12 months) and high monthly charges (>$70)",
+    x = "Tenure",
+    y = "Monthly Charges" , 
+    caption = "As tenure Increase churn decreaces regardless or price"
+  )  +
+  scale_fill_manual(name = "Customer Status" , 
+                     values = c("0" = "#648FFF", "1" = "#FE6100") , 
+                     labels = c("Stayed" , "Left")) +
+  theme_custom
+
+
+ggsave("multivariate_tenure_vs_charges_scatter_01.png" , 
+       plot =plot_9 , 
+       width = 16 , height = 9 , 
+       units = "in")           
+
+plot_data3 <-  cleaned_data |> 
+  group_by( tenure , contract) |>
+  summarise(churned_sum= sum(churn) , 
+            total = n() , 
+            rate = churned_sum/total*100)|> 
+  ungroup()
+# plot_10
+plot_10 <- ggplot(plot_data3 , aes(x = tenure , y = rate )) +
+  geom_line(linewidth = 1.2 , aes(color= contract) , show.legend = FALSE ) +
+  geom_point(size = .75 , alpha= 0.6) +
+  facet_wrap(~ contract, ncol = 1, scales = "free_y") +
+  labs(
+    title = "Contracts cut churn",
+    subtitle = "Month to Month churn persists ",
+    x = "Tenure",
+    y = "People Who Churned (Rate)" , 
+    caption = "Strategy: Focus onboarding efforts on first-year customers, especially month-to-monthh"
+  )  +
+  scale_x_continuous(breaks = seq(0, max(plot_data3$tenure), by = 12)) +
+  theme_custom
+ggsave("multivariate_tenure_churn_by_contract_02.png" , 
+       plot = plot_10 , 
+       width = 16  , 
+       height = 9 , 
+       units = "in")
