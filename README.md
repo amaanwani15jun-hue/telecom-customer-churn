@@ -1,0 +1,39 @@
+
+
+# 📊 Telecom Customer Churn Analysis
+
+## 🔗 Project Links
+
+- **[View Live Interactive
+  Report](https://amaanwani15jun-hue.github.io/telecom-customer-churn/)**
+  👈 **Start here to see the full analysis**
+- [View Source
+  Code](https://github.com/amaanwani15jun-hue/telecom-customer-churn)
+
+## 📝 Project Overview
+
+This project investigates customer attrition within the telecom
+industry. Using a dataset of over 7,000 customers, I performed a full
+data science workflow to identify why customers leave and how the
+business can improve retention.
+
+### Key Insights:
+
+- **Baseline Churn:** 26.5% of the customer base.
+- **Top Driver:** Month-to-month contracts show significantly higher
+  churn compared to long-term commitments.
+- **Technical Stack:** R (tidyverse, ggplot2), Quarto, and GitHub Pages.
+
+## 📬 Contact & Connect
+
+I am currently looking for opportunities in Data Analysis. Feel free to
+reach out!
+
+- **Email:** [Link](amaanwani15jun@gmail.com)
+- **LinkedIn:**
+  [Link](https://www.linkedin.com/in/amaan-ashfaq-10734a2ba)
+- **Portfolio:** [Link](https://github.com/amaanwani15jun-hue)
+
+------------------------------------------------------------------------
+
+*Last updated: January 16, 2026*
