@@ -29,7 +29,7 @@ business can improve retention.
 I am currently looking for opportunities in Data Analysis. Feel free to
 reach out!
 
-- **Email:** [Link](amaanwani15jun@gmail.com)
+- **Email:** <amaanwani15jun@gmail.com>
 - **LinkedIn:**
   [Link](https://www.linkedin.com/in/amaan-ashfaq-10734a2ba)
 - **Portfolio:** [Link](https://github.com/amaanwani15jun-hue)
